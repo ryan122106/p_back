@@ -9,19 +9,19 @@ app.use(cors());
 
 async function connectToMongoDB() {
   try {
-    await mongoose.connect("mongodb://localhost:27017/notes");
-    console.log("MongoDB connected");
-  } catch (err) {
-    console.log("MongoDB connection error:", err);
+    await mongoose.connect(process.env.MONGODB_URL + "/notes");
+    console.log("MongoDB is connected");
+  } catch (error) {
+    console.log("Error connecting to MongoDB:", error);
   }
 }
 connectToMongoDB();
 
-app.use("/users", require("./routes/user"));
-app.use("/notes", require("./routes/note"));
-app.use("/feedback", require("./routes/feedback"));
-app.use("/comments", require("./routes/comment"));
-app.use("/likes", require("./routes/like"));
+app.use("/api/users", require("./routes/user"));
+app.use("/api/notes", require("./routes/note"));
+app.use("/api/feedback", require("./routes/feedback"));
+app.use("/api/comments", require("./routes/comment"));
+app.use("/api/likes", require("./routes/like"));
 
 
 const imageRouter = require("./routes/image"); 
