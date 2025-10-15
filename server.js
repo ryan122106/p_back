@@ -28,8 +28,10 @@ app.use("/api/likes", require("./routes/like"));
 app.use("/api/image", require("./routes/image"));
 
 // ✅ Serve uploaded files (images/videos)
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // ✅ Start the server
 const PORT = process.env.PORT || 5123;
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server running at http://localhost:${PORT}`)
+);

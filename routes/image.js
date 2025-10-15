@@ -5,10 +5,8 @@ const path = require("path");
 const fs = require("fs");
 
 // Ensure the upload folder always exists
-const uploadDir = path.join(__dirname, "../uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+const uploadDir = path.join(process.cwd(), "uploads");
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
 // Setup Multer storage
 const storage = multer.diskStorage({
@@ -26,7 +24,9 @@ router.post("/", upload.array("media", 10), async (req, res) => {
       return res.status(400).send({ message: "No files uploaded" });
 
     // Return URLs to access uploaded files
-    const urls = req.files.map(file => `/uploads/${path.basename(file.path)}`);
+    const urls = req.files.map(
+      (file) => `/uploads/${path.basename(file.path)}`
+    );
     res.status(200).send({ urls });
   } catch (error) {
     console.error("Image upload error:", error);
