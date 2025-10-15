@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const path = require("path");
 
+// Multer storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
   filename: (req, file, cb) => {
@@ -16,11 +18,11 @@ router.post("/", upload.array("media", 10), async (req, res) => {
     if (!req.files || req.files.length === 0)
       return res.status(400).send({ message: "No files uploaded" });
 
-    const src = file.startsWith("http")
-      ? file
-      : `${window.location.origin}/${file
-          .replace(/^\/+/, "")
-          .replace(/\\/g, "/")}`;
+    // Map uploaded files to their accessible URLs
+    const urls = req.files.map((file) => {
+      // This URL should match your Express static route
+      return `/uploads/${file.filename}`;
+    });
 
     res.status(200).send({ urls });
   } catch (error) {
