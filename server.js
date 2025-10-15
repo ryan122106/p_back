@@ -25,8 +25,8 @@ app.use("/api/likes", require("./routes/like"));
 
 
 const imageRouter = require("./routes/image"); 
-app.use("/image", imageRouter);
+app.use("/api/image", imageRouter);
 
-app.use("/uploads", express.static("uploads"));
+app.use("/api/uploads", express.static("uploads"));
 
 app.listen(5123, () => console.log("Server running at http://localhost:5123"));
