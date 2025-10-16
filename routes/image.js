@@ -1,29 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const path = require("path");
 
-// Multer storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
   filename: (req, file, cb) => {
     cb(null, Date.now() + "_" + file.originalname.replace(/\s+/g, "_"));
-  },
+  }
 });
 
 const upload = multer({ storage });
+
 
 router.post("/", upload.array("media", 10), async (req, res) => {
   try {
     if (!req.files || req.files.length === 0)
       return res.status(400).send({ message: "No files uploaded" });
 
-    // Map uploaded files to their accessible URLs
-    const urls = req.files.map((file) => {
-      // This URL should match your Express static route
-      return `/uploads/${file.filename}`;
-    });
-
+    const urls = req.files.map(file => file.path);
     res.status(200).send({ urls });
   } catch (error) {
     console.log(error);
